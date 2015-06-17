@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Présentation AOP</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>AOP</h1>
+					<h3>Aspect Oriented Programming</h3>
+					<p><small>Présentation par Arnaud Brunet</small></p>
+				</section>
+
+				<section>
+					<section>
+						<h2>Questions /  Remarques</h2>
+					</section>
+					<section>
+						<h2>Questions /  Remarques</h2>
+						<p>Il n'y a pas de questions bêtes</p>
+						<p><img src="img/question-bete.png" /></p>
+					</section>
+					<section>
+						<h2>Questions /  Remarques</h2>
+						<p>Il n'y a pas de honte à ne pas savoir</p>
+						<p><img src="img/question-savoir.png" /></p>
+					</section>
+					<section>
+						<h2>Questions /  Remarques</h2>
+						<p>Je peux me tromper</p>
+						<p><img src="img/question-tromper.jpg" /></p>
+					</section>
+				</section>
+
+				<section>
+					<h2>Pourquoi l'AOP ?</h2>
+					<p>
+						<small>ou les limites de l'OOP</small>
+					</p>
+				</section>
+				<section>
+					<section>
+						<h2>Les torchons et les serviettes</h2>
+						<p><img src="img/spr.png" /></p>
+						<p><small>Exemple de code WithdrawService</small></p>
+					</section>
+					<section>
+						<h2>(Service Locator)</h2>
+						<p><img src="img/service-locator.png" /></p>
+						<p><small>IoC, Dependency Injection</small></p>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Design Patterns à la rescousse</h2>
+						<p><a href="img/jee-patterns.gif"><img src="img/jee-patterns.gif"/></a></p>
+					</section>
+					<section>
+						<h2>Valérie Damidot</h2>
+						<p><img src="img/decorator.png" /></p>
+					</section>	
+					<section>
+						<h2>Le mandataire</h2>
+						<p><img src="img/proxy.png" /></p>
+					</section>
+				</section>
+				
+				<section>
+					<section>
+						<h2>L' A O P</h2>
+						<p><img src="img/aop-humour.jpeg" /></p>
+					</section>
+					<section>
+						<h2>L' A O P</h2>
+						<p><img src="img/aop.jpeg" /></p>
+					</section>
+					<section>
+						<h2>AOP = aspects + weaver</h2>
+					</section>
+				</section>
+					
+				<section>
+					<section>
+						<h2>Aspect = pointcuts + advises</h2>
+						<p><img src="img/aspect.png" /></p>
+					</section>
+					<section>
+						<h2>Pointcuts</h2>
+						<p class="fragment">initialisation, construction d'un objet</p>
+						<p class="fragment">appel à une méthode</p>
+						<p class="fragment">lecture / écriture d'un attribut</p>
+						<p class="fragment">etc.</p>
+					</section>
+					<section>
+						<h2>Pointcuts</h2>
+						<p class="fragment strike highlight-red">à l'intérieure d'une méthode</p>
+						<p class="fragment">filtre sur le nom, les interfaces, les annotations, ...</p>
+					</section>
+					<section>
+						<h2>Pointcuts</h2>
+						<pre class="fragment"><code data-trim>
+@Pointcut("within(@logging.Loggable *)")
+public void myClass() {}
+						</code></pre>
+						<pre class="fragment"><code data-trim>
+@Pointcut("logging.LoggingAspect.myClass() && execution(* *(..)) \
+             && !execution(@logging.DontLogIt * *.*(..))")
+public void myMethod() {}
+						</code></pre>
+					</section>
+					
+					<section>
+						<h2>Advices</h2>
+						<p class="fragment">avant, après, autour d'un pointcut</p>
+						<p class="fragment">accès aux infos sur le pointcut</p>
+						<p class="fragment">interrompre l'execution</p>
+					</section>
+					<section>
+						<h2>Advices</h2>
+						<pre class="fragment"><code data-trim>
+@Around("tracePointCut()")
+public Object around(ProceedingJoinPoint joinPoint) {
+  String methodName = joinPoint.getSignature().getName();
+  System.out.println("-> " + methodName);
+  Object result = joinPoint.proceed();
+  System.out.println("<- " + methodName);
+  return result;
+}
+						</code></pre>
+					</section>
+				</section>
+				
+				<section>
+					<section>
+						<h2>AOP = aspects + weaver</h2>
+					</section>
+					<section>
+						<h2>Weaver</h2>
+						<p><img src="img/weaver.png" /></p>
+					</section>
+					<section>
+						<h2>Weaver</h2>
+						<p class="fragment">compile vs runtime</p>
+						<p class="fragment">modif du bytecode : aspectj, cglib, javassit</p>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Implémentations</h2>
+						<p class="fragment">non spécifique à Java</p>
+						<p class="fragment">AspectJ, Spring AOP, Guice, serveurs JEE</p>
+					</section>
+					<section>
+						<h2>Spring AOP</h2>
+						<p class="fragment">annotations AspectJ <span class="fragment strike highlight-red">ou xml</span></p>
+						<p class="fragment">mais Proxy si interface</p>
+						<p class="fragment">sinon bytecode avec cglib</p>
+						<p class="fragment"><small>ou aspectj</small></p>
+					</section>
+				</section>
+				
+				<section>
+					<h2>Exemples</h2>
+				</section>
+				
+				<section>
+					<section>
+						<h2>On l'utilise ?</h2>
+						<p class="fragment">vous l'utilisez déjà peut-être (voir surement)</p>
+						<p class="fragment">code transverse</p>
+						<p class="fragment">code plus technique</p>
+					</section>
+					<section>
+						<h2>On ne l'utilise pas ?</h2>
+						<p class="fragment">trop d'aspect, tue l'aspect</p>
+						<p class="fragment">complexité trop grande</p>
+						<p class="fragment">code non linéaire</p>
+						<p class="fragment">méconnaissances du déroulement de l'application</p>
+					</section>
+				</section>
+				
+				<section>
+					<h2>Questions /  Remarques</h2>
+					<p><img src="img/question.jpg" /></p>
+				</section>
+				
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+				slideNumber: true,
+				
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: false, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
